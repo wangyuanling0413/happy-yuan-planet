@@ -1,0 +1,22 @@
+<view class="course-container">
+  <view class="course-header">
+    <text class="course-title">{{courseData.name}}</text>
+    <text class="course-desc">{{courseData.description}}</text>
+  </view>
+
+  <view class="units-list">
+    <view 
+      class="unit-item"
+      wx:for="{{courseData.units}}"
+      wx:key="index"
+      bindtap="handleUnitSelect"
+      data-index="{{index}}"
+    >
+      <view class="unit-info">
+        <text class="unit-title">{{item.title}}</text>
+        <text class="unit-desc">{{item.questions}}个题目</text>
+      </view>
+      <text class="unit-status">{{item.completed ? '已完成' : '未完成'}}</text>
+    </view>
+  </view>
+</view> 

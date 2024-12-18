@@ -1,0 +1,40 @@
+.container {
+  padding: 40rpx;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 60rpx;
+}
+
+/* 完全删除 logo 相关样式，而不是注释
+.logo {
+  width: 200rpx;
+  height: 200rpx;
+  margin-bottom: 20rpx;
+}
+*/
+
+.title {
+  font-size: 48rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10rpx;
+}
+
+.subtitle {
+  font-size: 32rpx;
+  color: #666;
+}
+
+.start-btn {
+  width: 100%;
+  height: 88rpx;
+  background: #4CAF50;
+  color: white;
+  border-radius: 44rpx;
+  font-size: 32rpx;
+  margin-top: 60rpx;
+}

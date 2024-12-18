@@ -1,0 +1,27 @@
+<view class="learn-container">
+  <view class="welcome-section">
+    <text class="welcome-text">欢迎开始你的理财学习之旅！</text>
+    <text class="coins-text">当前星币：{{coins}}</text>
+  </view>
+  
+  <view class="course-list">
+    <text class="section-title">课程列表</text>
+    <view class="course-items">
+      <view 
+        class="course-item {{currentSection >= index + 1 ? 'unlocked' : 'locked'}}"
+        wx:for="{{courses}}"
+        wx:key="index"
+        bindtap="handleCourseSelect"
+        data-index="{{index}}"
+      >
+        <view class="course-info">
+          <text class="course-name">{{item.name}}</text>
+          <text class="course-desc">{{item.description}}</text>
+        </view>
+        <view class="course-status">
+          <text class="status-text">{{currentSection >= index + 1 ? '已解锁' : '未解锁'}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view> 
