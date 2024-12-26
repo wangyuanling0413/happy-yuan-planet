@@ -1,51 +1,53 @@
 const cloud = require('wx-server-sdk')
 cloud.init({
-  env: 'happy-yuan-planet-0ezodl4460e810'
+  env: 'happy-yuan-planet-0ezodl4460e810'  // 使用具体的云环境ID
 })
 const db = cloud.database()
 
 exports.main = async (event, context) => {
-  const wxContext = cloud.getWXContext()
+  const { phone, userInfo } = event
   
   try {
-    // 检查用户是否已注册
-    const user = await db.collection('users')
-      .where({
-        openid: wxContext.OPENID
-      })
-      .get()
+    // 先查询是否存在该手机号用户
+    const userResult = await db.collection('users').where({
+      phone: phone
+    }).get()
     
-    if (user.data.length > 0) {
+    if (userResult.data.length > 0) {
+      // 用户已存在,返回现有用户信息
       return {
-        success: false,
-        error: '用户已注册'
+        success: true,
+        isNewUser: false,
+        userInfo: userResult.data[0]
       }
     }
     
-    // 创建新用户
+    // 用户不存在,创建新用户
     const result = await db.collection('users').add({
       data: {
-        openid: wxContext.OPENID,
-        phone: event.phone,
-        realName: event.realName,
-        age: parseInt(event.age),
-        username: event.username,
-        learningGoal: event.learningGoal,
-        currentSection: 1,
-        isCompleted: false,
-        createTime: db.serverDate()
+        phone: phone,
+        nickName: userInfo.nickName || '',
+        avatarUrl: userInfo.avatarUrl || '',
+        createTime: db.serverDate(),
+        updateTime: db.serverDate()
       }
     })
     
     return {
       success: true,
-      data: result
+      isNewUser: true,
+      userInfo: {
+        _id: result._id,
+        phone: phone,
+        nickName: userInfo.nickName,
+        avatarUrl: userInfo.avatarUrl
+      }
     }
     
   } catch (err) {
     return {
       success: false,
-      error: err.message || '注册失败'
+      error: err
     }
   }
 } 
