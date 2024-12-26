@@ -1,0 +1,15 @@
+<view class="container">
+  <view class="header">
+    <image class="logo" src="/images/logo.png" />
+    <view class="title">快乐元星球</view>
+    <view class="subtitle">青少年理财教育平台</view>
+  </view>
+
+  <view class="content">
+    <button class="phone-btn" 
+            open-type="getPhoneNumber" 
+            bindgetphonenumber="getPhoneNumber">
+      手机号一键登录
+    </button>
+  </view>
+</view> 

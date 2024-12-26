@@ -1,0 +1,17 @@
+<view class="question-container">
+  <view class="question-title">{{questionData.title}}</view>
+  <view class="options-list">
+    <view 
+      class="option-item {{selectedIndex === index ? (isCorrect ? 'correct' : 'wrong') : ''}}"
+      wx:for="{{questionData.options}}"
+      wx:key="index"
+      bindtap="handleSelect"
+      data-index="{{index}}"
+    >
+      <text class="option-text">{{item}}</text>
+    </view>
+  </view>
+  <view class="explanation" wx:if="{{showExplanation}}">
+    <text class="explanation-text">{{questionData.explanation}}</text>
+  </view>
+</view> 
