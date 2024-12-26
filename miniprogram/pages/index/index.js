@@ -1,9 +1,24 @@
 Page({
-  data: {},
+  data: {
+    isBGMPlaying: false
+  },
 
   onLoad() {
-    // 检查是否已注册
-    this.checkRegistration();
+    const app = getApp()
+    // 自动播放背景音乐
+    app.bgm.play()
+    this.setData({
+      isBGMPlaying: true
+    })
+  },
+
+  // 点击音乐控制按钮
+  toggleBGM() {
+    const app = getApp()
+    app.toggleBGM()
+    this.setData({
+      isBGMPlaying: !this.data.isBGMPlaying
+    })
   },
 
   // 检查用户是否已注册
@@ -22,6 +37,9 @@ Page({
 
   // 开始学习按钮点击事件
   startLearning() {
+    const app = getApp()
+    app.playClickSound()  // 播放点击音效
+    
     wx.showLoading({
       title: '加载中...'
     });
