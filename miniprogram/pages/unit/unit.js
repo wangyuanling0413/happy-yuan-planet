@@ -38,9 +38,15 @@ Page({
             section,
             unit
           })
+        } else {
+          wx.showToast({
+            title: res.result.error || '加载失败',
+            icon: 'none'
+          })
         }
       }).catch(err => {
         wx.hideLoading()
+        console.error('加载题目失败：', err)
         wx.showToast({
           title: '加载失败',
           icon: 'none'
@@ -49,13 +55,47 @@ Page({
     }
   },
 
-  // 过滤当前单元的题目
-  filterQuestions(allQuestions, section, unit) {
-    const unitQuestions = allQuestions.filter(q => 
-      q.section === parseInt(section) && 
-      q.unit === parseInt(unit)
-    )
+  // 处理答题结果
+  handleQuestionResult(e) {
+    const { isCorrect } = e.detail;
+    const { currentQuestion, questions, answers } = this.data;
+    const app = getApp();
     
-    this.setData({ questions: unitQuestions })
+    console.log('答题结果：', isCorrect ? '正确' : '错误');
+    
+    // 播放对应音效
+    if (isCorrect) {
+      console.log('尝试播放正确音效');
+      app.playCorrectSound();
+    } else {
+      console.log('尝试播放错误音效');
+      app.playWrongSound();
+    }
+    
+    // 记录答题结果
+    answers[currentQuestion] = isCorrect;
+    this.setData({ answers });
+
+    // 如果是最后一题，显示完成提示
+    if (currentQuestion === questions.length - 1) {
+      setTimeout(() => {
+        this.showCompleteDialog();
+      }, 1500);
+    }
+  },
+
+  // 显示完成对话框
+  showCompleteDialog() {
+    const correctCount = this.data.answers.filter(result => result).length;
+    const totalCount = this.data.questions.length;
+    
+    wx.showModal({
+      title: '单元完成',
+      content: `你答对了 ${correctCount}/${totalCount} 题`,
+      showCancel: false,
+      success: () => {
+        wx.navigateBack();
+      }
+    });
   }
 }) 
