@@ -9,32 +9,21 @@ exports.main = async (event, context) => {
   const wxContext = cloud.getWXContext()
   
   try {
-    console.log('开始检查用户，OPENID:', wxContext.OPENID);
-    
-    // 查询用户是否存在
+    // 先通过 openid 查询
     const userResult = await db.collection('users')
-      .where({
-        openid: wxContext.OPENID
-      })
+      .where({ openid: wxContext.OPENID })
       .get()
     
-    console.log('查询结果:', JSON.stringify(userResult));
-    console.log('是否找到用户:', userResult.data.length > 0);
-    
-    const response = {
+    return {
       success: true,
       isRegistered: userResult.data.length > 0,
-      data: userResult.data[0] || null
-    };
-    
-    console.log('返回数据:', JSON.stringify(response));
-    return response;
+      userInfo: userResult.data[0] || null
+    }
     
   } catch (err) {
-    console.error('查询出错:', err);
     return {
       success: false,
-      error: err.message || '查询失败'
+      error: err
     }
   }
 } 

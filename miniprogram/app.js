@@ -9,7 +9,10 @@ App({
       })
     }
   },
+
+  // 不再预加载所有题目
   globalData: {
-    courses: null
+    courses: null,
+    questionsCache: {}  // 改用缓存对象存储各单元的题目
   }
 })
