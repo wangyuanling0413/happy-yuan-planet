@@ -8,29 +8,44 @@ exports.main = async (event, context) => {
   const wxContext = cloud.getWXContext()
   
   try {
-    console.log('开始更新用户数据');
-    
-    const result = await db.collection('users')
+    // 检查用户是否已注册
+    const user = await db.collection('users')
       .where({
         openid: wxContext.OPENID
       })
-      .update({
-        data: {
-          currentSection: 1
-        }
-      });
+      .get()
     
-    console.log('更新结果：', result);
+    if (user.data.length > 0) {
+      return {
+        success: false,
+        error: '用户已注册'
+      }
+    }
+    
+    // 创建新用户
+    const result = await db.collection('users').add({
+      data: {
+        openid: wxContext.OPENID,
+        phone: event.phone,
+        realName: event.realName,
+        age: parseInt(event.age),
+        username: event.username,
+        learningGoal: event.learningGoal,
+        currentSection: 1,
+        isCompleted: false,
+        createTime: db.serverDate()
+      }
+    })
     
     return {
       success: true,
       data: result
     }
+    
   } catch (err) {
-    console.error('更新失败：', err);
     return {
       success: false,
-      error: err.message || '更新失败'
+      error: err.message || '注册失败'
     }
   }
 } 
