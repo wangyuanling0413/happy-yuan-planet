@@ -14,7 +14,6 @@
     >
       <view class="unit-info">
         <text class="unit-title">{{item.title}}</text>
-        <text class="unit-desc">{{item.questions}}个题目</text>
       </view>
       <text class="unit-status">{{item.completed ? '已完成' : '未完成'}}</text>
     </view>

@@ -8,44 +8,39 @@ Page({
         description: '了解理财的基本概念和重要性',
         section: 1,
         units: [
-          {
-            title: '什么是理财',
-            questions: 5
-          },
-          {
-            title: '为什么要理财',
-            questions: 5
-          }
+          { title: '储蓄规划' },
+          { title: '预算管理' },
+          { title: '消费观念' }
         ]
       },
       {
-        name: '储蓄与投资',
-        description: '学习不同的储蓄方式和投资概念',
+        name: '信用与负债',
+        description: '学习信用卡使用和债务管理',
         section: 2,
         units: [
-          {
-            title: '储蓄的方式',
-            questions: 5
-          },
-          {
-            title: '投资的基础',
-            questions: 5
-          }
+          { title: '信用卡使用' },
+          { title: '分期付款' },
+          { title: '债务管理' }
         ]
       },
       {
-        name: '风险与收益',
-        description: '认识投资风险和收益的关系',
+        name: '投资理财',
+        description: '认识不同的投资方式',
         section: 3,
         units: [
-          {
-            title: '风险类型',
-            questions: 5
-          },
-          {
-            title: '如何控制风险',
-            questions: 5
-          }
+          { title: '基金投资' },
+          { title: '理财产品' },
+          { title: '投资组合' }
+        ]
+      },
+      {
+        name: '风险防范',
+        description: '学习识别和防范金融风险',
+        section: 4,
+        units: [
+          { title: '投资风险' },
+          { title: '网络安全' },
+          { title: '资金安全' }
         ]
       }
     ]
@@ -82,7 +77,7 @@ Page({
                 coins: updatedUserData.coins || 0,
                 currentSection: updatedUserData.currentSection || 1
               });
-              console.log('更新后的页面数据：', {
+              console.log('更新���的页面数据：', {
                 coins: this.data.coins,
                 currentSection: this.data.currentSection
               });

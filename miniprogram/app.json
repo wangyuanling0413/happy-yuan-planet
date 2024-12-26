@@ -3,7 +3,8 @@
     "pages/index/index",
     "pages/learn/learn",
     "pages/register/register",
-    "pages/course/course"
+    "pages/course/course",
+    "pages/unit/unit"
   ],
   "window": {
     "backgroundTextStyle": "light",
