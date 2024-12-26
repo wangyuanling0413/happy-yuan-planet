@@ -34,7 +34,7 @@ App({
     this.wrongSound = wx.createInnerAudioContext()
     this.wrongSound.src = '/audio/wrong.mp3'
     this.wrongSound.onError((res) => {
-      console.error('错误音效加载失���：', res)
+      console.error('错误音效加载失败：', res)
     })
     this.wrongSound.onPlay(() => {
       console.log('错误音效开始播放')
@@ -43,17 +43,16 @@ App({
       console.log('错误音效播放结束')
     })
     
+    /* 暂时注释掉音频代码
     // 初始化海浪背景音乐
     this.oceanBGM = wx.createInnerAudioContext()
     this.oceanBGM.src = '/audio/ocean.mp3'
-    this.oceanBGM.loop = true  // 循环播放
-    this.oceanBGM.volume = 0.3  // 设置音量为30%，让背景音不会太突出
+    this.oceanBGM.loop = true
+    this.oceanBGM.volume = 0.3
     this.oceanBGM.onError((res) => {
       console.error('海浪背景音乐加载失败：', res)
     })
-    this.oceanBGM.onPlay(() => {
-      console.log('海浪背景音乐开始播放')
-    })
+    */
   },
 
   // 播放/暂停背景音乐
@@ -93,6 +92,7 @@ App({
 
   // 播放/暂停海浪背景音乐
   toggleOceanBGM() {
+    /* 暂时返回 false
     if (this.oceanBGM.paused) {
       this.oceanBGM.play()
       return true
@@ -100,6 +100,8 @@ App({
       this.oceanBGM.pause()
       return false
     }
+    */
+    return false
   },
 
   // 调整海浪音量
