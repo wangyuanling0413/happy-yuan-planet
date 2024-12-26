@@ -4,11 +4,22 @@ cloud.init({
 })
 const db = cloud.database()
 
+const totalSections = 4;
+
 exports.main = async (event, context) => {
   const wxContext = cloud.getWXContext()
   
   try {
     console.log('开始更新用户数据，OPENID:', wxContext.OPENID);
+    
+    // 验证请求的章节号
+    const nextSection = event.nextSection;
+    if (typeof nextSection !== 'number' || nextSection < 1 || nextSection > totalSections) {
+      return {
+        success: false,
+        error: '无效的章节号'
+      };
+    }
     
     // 先更新数据
     const updateResult = await db.collection('users')
@@ -17,7 +28,9 @@ exports.main = async (event, context) => {
       })
       .update({
         data: {
-          currentSection: 1
+          currentSection: nextSection,
+          // 如果是完成最后一章，更新完成状态
+          isCompleted: nextSection === totalSections
         }
       });
     
@@ -49,10 +62,15 @@ exports.main = async (event, context) => {
     const userData = userResult.data[0];
     console.log('更新后的用户数据:', userData);
     
-    return {
+    // 添加额外的返回信息
+    const response = {
       success: true,
-      data: userData
+      data: userData,
+      isLastSection: nextSection === totalSections
     };
+    
+    return response;
+
   } catch (err) {
     console.error('更新失败：', err);
     return {

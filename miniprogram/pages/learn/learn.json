@@ -1,6 +1,6 @@
 {
-    "navigationBarTitleText": "学习",
-    "usingComponents": {
-      "question": "/components/question/question"
-    }
-  } 
+  "navigationBarTitleText": "学习",
+  "usingComponents": {
+    "question": "/components/question/question"
+  }
+} 
