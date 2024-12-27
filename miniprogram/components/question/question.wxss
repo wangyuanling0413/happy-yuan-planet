@@ -22,6 +22,7 @@
   border-radius: 12rpx;
   margin-bottom: 20rpx;
   transition: all 0.3s ease;
+  border: 2rpx solid transparent;
 }
 
 .option-item:active {
@@ -30,12 +31,22 @@
 
 .option-item.correct {
   background: #e8f5e9;
-  border: 2rpx solid #4caf50;
+  border-color: #4caf50;
+  color: #2e7d32;
+}
+
+.option-item.correct .option-text {
+  color: #2e7d32;
 }
 
 .option-item.wrong {
   background: #ffebee;
-  border: 2rpx solid #f44336;
+  border-color: #f44336;
+  color: #c62828;
+}
+
+.option-item.wrong .option-text {
+  color: #c62828;
 }
 
 .option-text {
@@ -49,10 +60,22 @@
   padding: 20rpx;
   background: #fff9c4;
   border-radius: 12rpx;
+  animation: fadeIn 0.3s ease-out;
 }
 
 .explanation-text {
   font-size: 28rpx;
   color: #795548;
   line-height: 1.6;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10rpx);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 } 

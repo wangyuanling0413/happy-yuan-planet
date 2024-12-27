@@ -23,13 +23,20 @@ Component({
         const index = e.currentTarget.dataset.index;
         const isCorrect = index === this.properties.questionData.answer;
         
+        // 先只更新选择状态和正确性
         this.setData({
           selectedIndex: index,
-          isCorrect,
-          showExplanation: true
+          isCorrect
         });
-  
-        this.triggerEvent('result', { isCorrect });
+
+        // 1.5秒后再显示解析
+        setTimeout(() => {
+          this.setData({
+            showExplanation: true
+          });
+          // 触发结果事件
+          this.triggerEvent('result', { isCorrect });
+        }, 1500);
       },
   
       reset() {

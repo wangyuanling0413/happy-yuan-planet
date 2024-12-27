@@ -95,39 +95,20 @@ Page({
     answers[currentQuestion] = isCorrect;
     this.setData({ answers });
 
-    // 先显示答题结果
-    wx.showToast({
-      title: isCorrect ? '回答正确' : '回答错误',
-      icon: isCorrect ? 'success' : 'error',
-      duration: 1500
-    });
-
     // 显示解析
-    setTimeout(() => {
-      wx.showModal({
-        title: isCorrect ? '答对了！' : '解析',
-        content: questions[currentQuestion].explanation,
-        showCancel: false,
-        success: () => {
-          // 用户点击确定后，根据是否是最后一题决定下一步操作
-          if (currentQuestion === questions.length - 1) {
-            console.log('这是最后一题，即将显示完成提示');
-            setTimeout(() => {
-              this.showCompleteDialog();
-            }, 500);
-          } else {
-            // 自动进入下一题
-            console.log('准备进入下一题');
-            console.log('当前题号：', currentQuestion, '下一题号：', currentQuestion + 1);
-            setTimeout(() => {
-              this.setData({
-                currentQuestion: currentQuestion + 1
-              });
-            }, 1000);
-          }
+    wx.showModal({
+      title: isCorrect ? '答对了！' : '解析',
+      content: questions[currentQuestion].explanation,
+      showCancel: false,
+      success: () => {
+        // 用户点击确定后，根据是否是最后一题决定下一步操作
+        if (currentQuestion === questions.length - 1) {
+          console.log('这是最后一题，即将显示完成提示');
+          this.showCompleteDialog();
         }
-      });
-    }, 1500);
+        // 移除自动跳转，让用户自己选择何时进入下一题
+      }
+    });
   },
 
   // 显示完成对话框
@@ -165,6 +146,15 @@ Page({
         
         if (res.result && res.result.success) {
           console.log('更新进度成功，返回数据：', res.result);
+          
+          // 发送事件通知课程页面刷新
+          const eventChannel = this.getOpenerEventChannel();
+          eventChannel.emit('unitCompleted', { 
+            section: progressData.section,
+            unit: progressData.unit,
+            score: score
+          });
+          
           // 显示完成对话框
           wx.showModal({
             title: '单元完成',
@@ -234,9 +224,10 @@ Page({
     if (this.data.currentQuestion < this.data.questions.length - 1) {
       const nextQuestionIndex = this.data.currentQuestion + 1;
       console.log('将要切换到题号：', nextQuestionIndex);
-      console.log('下一题详情：', this.data.questions[nextQuestionIndex]);
+      console.log('下��题详情：', this.data.questions[nextQuestionIndex]);
       this.setData({
-        currentQuestion: nextQuestionIndex
+        currentQuestion: nextQuestionIndex,
+        showNavigation: false  // 如果导航面板打开，则关闭
       });
     }
   },
@@ -248,7 +239,7 @@ Page({
     });
   },
 
-  // 跳转到指定题目
+  // 转到指定题目
   jumpToQuestion(e) {
     const index = e.currentTarget.dataset.index;
     this.setData({

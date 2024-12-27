@@ -6,7 +6,7 @@
 
   <view class="units-list">
     <view 
-      class="unit-item {{getUnitStatus(index).isCompleted ? 'completed' : ''}}"
+      class="unit-item {{progress[courseData.section][index + 1].isCompleted ? 'completed' : ''}}"
       wx:for="{{courseData.units}}"
       wx:key="index"
       bindtap="handleUnitSelect"
@@ -17,9 +17,9 @@
         <text class="unit-desc">{{item.description}}</text>
       </view>
       <view class="unit-status">
-        <block wx:if="{{getUnitStatus(index).isCompleted}}">
+        <block wx:if="{{progress[courseData.section][index + 1].isCompleted}}">
           <text class="status-text completed">已完成</text>
-          <text class="score-text">{{getUnitStatus(index).score}}分</text>
+          <text class="score-text">{{progress[courseData.section][index + 1].score}}分</text>
         </block>
         <text wx:else class="status-text">未完成</text>
       </view>

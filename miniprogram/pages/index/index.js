@@ -31,7 +31,7 @@ Page({
     */
   },
 
-  // 恢复开始学习按钮点击事件
+  // 开始学习按钮点击事件
   startLearning() {
     const app = getApp()
     app.playClickSound()  // 播放点击音效
