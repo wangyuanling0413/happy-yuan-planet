@@ -1,26 +1,33 @@
-<view class="unit-container">
-  <!-- 题目进度 -->
+<view class="container">
   <view class="progress-bar">
-    <text class="progress-text">第 {{currentQuestion + 1}} 题 / 共 {{questions.length}} 题</text>
+    <text class="progress-text">第 {{currentQuestion + 1}}/{{questions.length}} 题</text>
+    <view class="navigation-btn" bindtap="toggleNavigation">
+      <text>题目导航</text>
+    </view>
   </view>
 
-  <!-- 题目内容 -->
-  <block wx:if="{{questions.length > 0}}">
-    <question 
-      questionData="{{questions[currentQuestion]}}"
-      bind:result="handleQuestionResult"
-    />
-  </block>
+  <question 
+    id="question"
+    wx:if="{{questions.length > 0}}"
+    question-data="{{questions[currentQuestion]}}"
+    bind:result="handleQuestionResult"
+  />
 
-  <!-- 加载提示 -->
-  <block wx:else>
-    <view class="loading">
-      <text>加载题目中...</text>
+  <view class="navigation-panel" wx:if="{{showNavigation}}">
+    <view class="navigation-list">
+      <view 
+        class="navigation-item {{currentQuestion === index ? 'active' : ''}} {{answers[index] === true ? 'correct' : answers[index] === false ? 'wrong' : ''}}"
+        wx:for="{{questions}}"
+        wx:key="index"
+        bindtap="jumpToQuestion"
+        data-index="{{index}}"
+      >
+        {{index + 1}}
+      </view>
     </view>
-  </block>
+  </view>
 
-  <!-- 导航按钮 -->
-  <view class="nav-buttons" wx:if="{{questions.length > 0}}">
+  <view class="navigation-buttons">
     <button 
       class="nav-btn prev" 
       bindtap="prevQuestion"

@@ -2,7 +2,13 @@ Component({
     properties: {
       questionData: {
         type: Object,
-        value: {}
+        value: {},
+        observer(newVal, oldVal) {
+          // 当题目数据改变时，自动重置状态
+          if (newVal._id !== oldVal._id) {
+            this.reset();
+          }
+        }
       }
     },
   
@@ -27,6 +33,7 @@ Component({
       },
   
       reset() {
+        console.log('重置题目状态');
         this.setData({
           selectedIndex: -1,
           isCorrect: false,

@@ -1,56 +1,111 @@
-.unit-container {
-  padding: 40rpx;
+.container {
+  padding: 30rpx;
   min-height: 100vh;
-  background: #f5f5f5;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  background: #f5f7fa;
 }
 
 .progress-bar {
-  margin-bottom: 40rpx;
-  text-align: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30rpx;
+  padding: 20rpx;
+  background: #fff;
+  border-radius: 12rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.1);
 }
 
 .progress-text {
   font-size: 28rpx;
   color: #666;
-  background: #fff;
+}
+
+.navigation-btn {
   padding: 10rpx 20rpx;
-  border-radius: 20rpx;
+  background: #e8f0fe;
+  border-radius: 8rpx;
+  font-size: 26rpx;
+  color: #0052d9;
 }
 
-.loading {
-  text-align: center;
-  padding: 40rpx;
+.navigation-panel {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  padding: 30rpx;
+  border-radius: 16rpx;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.15);
+  z-index: 100;
+  max-width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
 }
 
-.loading text {
+.navigation-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20rpx;
+}
+
+.navigation-item {
+  width: 80rpx;
+  height: 80rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f5f7fa;
+  border-radius: 12rpx;
   font-size: 28rpx;
-  color: #999;
+  color: #666;
 }
 
-.nav-buttons {
+.navigation-item.active {
+  background: #0052d9;
+  color: #fff;
+}
+
+.navigation-item.correct {
+  background: #e8f5e9;
+  color: #4caf50;
+  border: 2rpx solid #4caf50;
+}
+
+.navigation-item.wrong {
+  background: #ffebee;
+  color: #f44336;
+  border: 2rpx solid #f44336;
+}
+
+.navigation-buttons {
   display: flex;
   justify-content: space-between;
-  margin-top: 60rpx;
+  margin-top: 40rpx;
   padding: 0 20rpx;
 }
 
 .nav-btn {
-  width: 200rpx;
+  width: 45%;
   height: 80rpx;
   line-height: 80rpx;
   text-align: center;
-  background: #4CAF50;
-  color: white;
   border-radius: 40rpx;
-  font-size: 28rpx;
+  font-size: 30rpx;
+  background: #fff;
+  color: #0052d9;
+  border: 2rpx solid #0052d9;
+}
+
+.nav-btn:active {
+  opacity: 0.8;
 }
 
 .nav-btn[disabled] {
-  background: #ccc;
-  color: #fff;
-}
-
-.nav-btn.prev {
-  background: #666;
+  background: #f5f5f5;
+  color: #999;
+  border-color: #ddd;
 } 

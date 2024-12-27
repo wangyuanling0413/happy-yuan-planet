@@ -11,4 +11,26 @@
   <view class="start-section">
     <button class="start-btn" bindtap="startLearning">开始学习</button>
   </view>
+
+  <!-- 海浪背景音乐控制按钮 -->
+  <view class="audio-control">
+    <image 
+      class="audio-icon {{isOceanPlaying ? 'playing' : ''}}" 
+      src="/images/audio-{{isOceanPlaying ? 'on' : 'off'}}.png"
+      bindtap="toggleOceanSound"
+    ></image>
+  </view>
+
+  <!-- 音量滑块 -->
+  <view class="volume-control" wx:if="{{isOceanPlaying}}">
+    <slider 
+      min="0" 
+      max="100" 
+      value="{{volumeValue}}" 
+      bindchange="handleVolumeChange"
+      activeColor="#4CAF50"
+      backgroundColor="#ddd"
+      block-size="12"
+    />
+  </view>
 </view> 

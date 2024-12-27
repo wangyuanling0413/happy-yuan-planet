@@ -1,6 +1,7 @@
 Page({
   data: {
-    courseData: null
+    courseData: null,
+    progress: null
   },
 
   onLoad(options) {
@@ -33,6 +34,32 @@ Page({
     }
 
     this.setData({ courseData });
+    this.loadUserProgress();
+  },
+
+  onShow() {
+    if (this.data.courseData) {
+      this.loadUserProgress();
+    }
+  },
+
+  loadUserProgress() {
+    wx.showLoading({ title: '加载中' });
+    wx.cloud.callFunction({
+      name: 'getUserInfo'
+    }).then(res => {
+      wx.hideLoading();
+      if (res.result && res.result.success) {
+        const userInfo = res.result.data;
+        const progress = userInfo.progress || {};
+        this.setData({ progress });
+      } else {
+        console.error('获取用户信息失败：', res);
+      }
+    }).catch(err => {
+      wx.hideLoading();
+      console.error('调用云函数失败：', err);
+    });
   },
 
   handleUnitSelect(e) {
@@ -40,5 +67,21 @@ Page({
     wx.navigateTo({
       url: `/pages/unit/unit?section=${this.data.courseData.section}&unit=${index + 1}`
     });
+  },
+
+  getUnitStatus(unitIndex) {
+    const { courseData, progress } = this.data;
+    if (!progress || !progress[courseData.section]) {
+      return {
+        isCompleted: false,
+        score: 0
+      };
+    }
+    
+    const unitProgress = progress[courseData.section][unitIndex + 1];
+    return unitProgress || {
+      isCompleted: false,
+      score: 0
+    };
   }
 }); 
