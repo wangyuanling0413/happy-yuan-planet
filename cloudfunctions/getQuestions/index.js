@@ -4,59 +4,105 @@ cloud.init({
 })
 const db = cloud.database()
 
-// 缓存对象
-const questionsCache = {}
-
 exports.main = async (event, context) => {
   const { section, unit } = event
-  const cacheKey = `${section}-${unit}`
   
   try {
-    // 检查缓存
-    if (questionsCache[cacheKey]) {
-      console.log('使用缓存数据');
+    // 1. 参数验证
+    if (!section || !unit) {
       return {
-        success: true,
-        data: questionsCache[cacheKey],
-        fromCache: true
+        success: false,
+        error: '缺少必要参数：section 或 unit',
+        debug: { receivedParams: { section, unit } }
       }
     }
 
-    // 只获取需要的字段
+    // 2. 转换参数类型
+    const sectionNum = parseInt(section)
+    const unitNum = parseInt(unit)
+
+    if (isNaN(sectionNum) || isNaN(unitNum)) {
+      return {
+        success: false,
+        error: '参数类型错误：section 和 unit 必须是数字',
+        debug: { 
+          section: { value: section, converted: sectionNum },
+          unit: { value: unit, converted: unitNum }
+        }
+      }
+    }
+
+    // 3. 构建查询
+    const query = {
+      section: sectionNum,
+      unit: unitNum
+    }
+
+    // 4. 获取题目详情
     const questions = await db.collection('questions')
-      .where({
-        section: parseInt(section),
-        unit: parseInt(unit)
-      })
+      .where(query)
       .field({
+        _id: true,
         title: true,
         options: true,
         answer: true,
         explanation: true,
         points: true,
-        type: true
+        type: true,
+        section: true,
+        unit: true
       })
       .get()
-    
-    if (questions.data.length === 0) {
+
+    // 5. 检查是否获取到题目
+    if (!questions || !questions.data || questions.data.length === 0) {
       return {
         success: false,
-        error: '未找到题目'
+        error: `未找到第${sectionNum}章第${unitNum}单元的题目`,
+        debug: { query }
       }
     }
 
-    // 存入缓存
-    questionsCache[cacheKey] = questions.data
-    
+    // 6. 对结果进行排序
+    const sortedQuestions = questions.data.sort((a, b) => {
+      // 先按章节排序
+      if (a.section !== b.section) {
+        return a.section - b.section;
+      }
+      // 章节相同则按单元排序
+      if (a.unit !== b.unit) {
+        return a.unit - b.unit;
+      }
+      // 最后按_id排序
+      return a._id < b._id ? -1 : 1;
+    });
+
+    // 7. 返回结果
     return {
       success: true,
-      data: questions.data
+      data: sortedQuestions,
+      debug: {
+        query,
+        totalMatched: sortedQuestions.length,
+        matchedQuestions: sortedQuestions.map(q => ({
+          _id: q._id,
+          section: q.section,
+          unit: q.unit,
+          title: q.title ? q.title.slice(0, 20) + '...' : 'No title'
+        }))
+      }
     }
+
   } catch (err) {
-    console.error('获取题目失败：', err);
+    console.error('获取题目失败：', err)
     return {
       success: false,
-      error: err.message
+      error: err.message,
+      debug: {
+        requestedSection: section,
+        requestedUnit: unit,
+        errorStack: err.stack
+      }
     }
   }
-} 
+}

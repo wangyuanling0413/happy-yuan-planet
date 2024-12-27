@@ -1,24 +1,28 @@
 App({
   onLaunch: function () {
+    //1. 初始化云开发环境
     if (!wx.cloud) {
       console.error('请使用 2.2.3 或以上的基础库以使用云能力')
     } else {
       wx.cloud.init({
         env: 'happy-yuan-planet-0ezodl4460e810',
-        traceUser: true,
+        traceUser: true,//跟踪用户访问记录
       })
     }
     
-    // 初始化背景音乐
+    // 2. 初始化音频系统
+    //2.1 背景音乐
+    
     this.bgm = wx.createInnerAudioContext()
     this.bgm.src = '/audio/bgm.mp3'
     this.bgm.loop = true  // 循环播放
     
-    // 初始化音效
+    // 2.2 初始化点击音效
     this.clickSound = wx.createInnerAudioContext()
     this.clickSound.src = '/audio/click.mp3'
     
-    // 初始化答题音效
+    // 2.3 初始化答题音效
+    //正确音效
     this.correctSound = wx.createInnerAudioContext()
     this.correctSound.src = '/audio/correct.mp3'
     this.correctSound.onError((res) => {
@@ -31,6 +35,7 @@ App({
       console.log('正确音效播放结束')
     })
     
+    //错误音效
     this.wrongSound = wx.createInnerAudioContext()
     this.wrongSound.src = '/audio/wrong.mp3'
     this.wrongSound.onError((res) => {
@@ -55,7 +60,8 @@ App({
     */
   },
 
-  // 播放/暂停背景音乐
+  //3. 音频控制方法
+  // 3.1 播放/暂停背景音乐
   toggleBGM() {
     if (this.bgm.paused) {
       this.bgm.play()
@@ -64,13 +70,13 @@ App({
     }
   },
 
-  // 播放点击音效
+  // 3.2 播放点击音效
   playClickSound() {
     this.clickSound.stop()  // 停止之前的播放
     this.clickSound.play()
   },
 
-  // 播放答对音效
+  // 3.3 播放答对音效
   playCorrectSound() {
     try {
       this.correctSound.stop()
@@ -111,6 +117,7 @@ App({
     }
   },
 
+//4. 全局数据
   // 不再预加载所有题目
   globalData: {
     courses: null,
