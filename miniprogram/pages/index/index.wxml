@@ -1,7 +1,11 @@
 <view class="container">
   <view class="header">
-    <text class="title">快乐元星球</text>
-    <text class="subtitle">让理财学习更有趣</text>
+    <view class="title-wrapper">
+      <text class="title">快乐元星球</text>
+    </view>
+    <view class="subtitle-wrapper">
+      <text class="subtitle">让理财学习更有趣</text>
+    </view>
   </view>
 
   <view class="start-section">

@@ -13,18 +13,27 @@
   text-align: center;
   margin-bottom: 100rpx;
   animation: fadeIn 0.8s ease-out;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20rpx;
+}
+
+.title-wrapper, .subtitle-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 .title {
   font-size: 72rpx;
   font-weight: 800;
   color: #0052d9;
-  margin-bottom: 32rpx;
   letter-spacing: 8rpx;
   text-shadow: 0 4rpx 16rpx rgba(0,82,217,0.3);
   font-family: "STSong", "SimSun", "宋体", serif;
   position: relative;
-  display: inline-block;
+  display: block;
 }
 
 .title::after {
@@ -46,7 +55,7 @@
   letter-spacing: 6rpx;
   opacity: 0.95;
   font-family: "STKaiti", "楷体", "KaiTi", serif;
-  margin-top: 16rpx;
+  display: block;
 }
 
 .start-btn {

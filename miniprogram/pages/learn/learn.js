@@ -57,8 +57,7 @@ Page({
     wx.cloud.callFunction({
       name: 'getUserInfo'
     }).then(res => {
-      console.log('获取用户信息成功，完整数据：', JSON.stringify(res, null, 2));
-      console.log('用户数据：', JSON.stringify(res.result.data, null, 2));
+      console.log('获取用户信息成功');
       
       if (res.result && res.result.success) {
         const userData = res.result.data;
@@ -69,17 +68,12 @@ Page({
           wx.cloud.callFunction({
             name: 'updateUser'
           }).then(updateRes => {
-            console.log('更新用户数据结果：', JSON.stringify(updateRes, null, 2));
             if (updateRes.result && updateRes.result.success) {
               // 使用更新后的数据
               const updatedUserData = updateRes.result.data;
               this.setData({
                 coins: updatedUserData.coins || 0,
                 currentSection: updatedUserData.currentSection || 1
-              });
-              console.log('更新���的页面数据：', {
-                coins: this.data.coins,
-                currentSection: this.data.currentSection
               });
             }
           }).catch(err => {
@@ -91,11 +85,6 @@ Page({
             currentSection: userData.currentSection || 1
           });
         }
-        
-        console.log('设置后的数据：', {
-          coins: this.data.coins,
-          currentSection: this.data.currentSection
-        });
       } else {
         console.log('用户可能未注册');
         this.setData({
